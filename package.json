@@ -1,0 +1,27 @@
+{
+  "name": "calculator-app-working",
+  "version": "1.0.0",
+  "description": "![Design preview for the Calculator app coding challenge](./design/desktop-preview.jpg)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll",
+    "build": "webpack",
+    "watch": "sass --watch ./src/style.scss ./dist/style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmcbutter/calculator-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmcbutter/calculator-app/issues"
+  },
+  "homepage": "https://github.com/jmcbutter/calculator-app#readme",
+  "devDependencies": {
+    "jest": "^29.1.2",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+}

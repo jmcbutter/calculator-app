@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  
+  <title>Frontend Mentor | Calculator app</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+  </style>
+</head>
+<body data-theme="1">
+  <main>
+    <div class="header">
+      <h1 class="header__site-name">calc</h1>
+      <label class="header__switch-label" for="toggle">Theme</label>
+      <div class="header__toggle-switch">
+        <div class="header__switch-numbers">
+          <p>1</p> 
+          <p>2</p> 
+          <p>3</p>
+        </div>
+        <input class="slider header__toggle-switch" type="range" name="toggle" id="toggle" 
+                min="1" max="3">
+      </div>
+      </div>
+    </div>
+
+    <input class="display" type="text" name="display" id="display" value="399,981">
+  
+    <div class="keypad">
+      <button class="key key--square key--number">7</button>
+      <button class="key key--square key--number">8</button>
+      <button class="key key--square key--number">9</button>
+      <button class="key key--square key--deletion">del</button>
+
+      <button class="key key--square key--number">4</button>
+      <button class="key key--square key--number">5</button>
+      <button class="key key--square key--number">6</button>
+      <button class="key key--square key--number">+</button>
+
+      <button class="key key--square key--number">1</button>
+      <button class="key key--square key--number">2</button>
+      <button class="key key--square key--number">3</button>
+      <button class="key key--square key--number">-</button>
+
+      <button class="key key--square key--number">.</button>
+      <button class="key key--square key--number">0</button>
+      <button class="key key--square key--number">/</button>
+      <button class="key key--square key--number">x</button>
+
+      <button class="key key--rectangle key--deletion keypad__span-2">reset</button>
+      <button class="key key--rectangle key--equals keypad__span-2">=</button>
+    </div>
+  </main>
+</body>
+</html>
