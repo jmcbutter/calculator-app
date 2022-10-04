@@ -9,6 +9,7 @@
   --color-text-dark: #434A59;
   --color-header-text: #FFFFFF;
   --color-text-display: #FFFFFF;
+  --color-text-display-previous: #ADADAD;
   --color-key-numbers: #EAE3DC;
   --color-key-numbers-shadow: #B3A497;
   --color-key-numbers-hover: #FFFFFE;
@@ -91,6 +92,7 @@ body {
 }
 
 main {
+  position: relative;
   width: min(100%, 13.5rem);
 }
 
@@ -173,6 +175,13 @@ button {
   border: none;
   border-radius: 0.25em;
   text-align: right;
+}
+.display__label {
+  color: var(--color-text-display-previous);
+  position: absolute;
+  right: 1rem;
+  top: 0.25rem;
+  font-size: var(--font-fixed-sm);
 }
 
 .keypad {

@@ -13,4 +13,12 @@
   border-radius: 0.25em;
   
   text-align: right;
+
+  &__label {
+    color: var(--color-text-display-previous);
+    position: absolute;
+    right: 1rem;
+    top: 0.25rem;
+    font-size: var(--font-fixed-sm);
+  }
 }
