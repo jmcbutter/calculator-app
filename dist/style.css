@@ -1,8 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap");
-* {
-  box-sizing: border-box;
-}
-
 [data-theme="1"] {
   --color-background: #3A4663;
   --color-display-background: #181F33;
@@ -15,7 +11,7 @@
   --color-text-display: #FFFFFF;
   --color-key-numbers: #EAE3DC;
   --color-key-numbers-shadow: #B3A497;
-  --color-key-numbers-shadow: #FFFFFE;
+  --color-key-numbers-hover: #FFFFFE;
   --color-key-deletion: #647198;
   --color-key-deletion-shadow: #414E73;
   --color-key-deletion-hover: #A2B2E1;
@@ -79,19 +75,23 @@
   --font-fixed-sm: calc(11px + 0.3vw);
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-color: var(--color-background);
-  margin: 0 0.75em;
+  color: var(--color-text-dark);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: var(--color-text-dark);
+  align-items: center;
+  margin: 0 0.75em;
+  height: 100vh;
 }
 
 main {
-  margin: 0 auto;
-  width: 100%;
-  max-width: 13.5rem;
+  width: min(100%, 13.5rem);
 }
 
 button {
@@ -100,14 +100,14 @@ button {
 }
 
 .header {
-  color: var(--color-header-text);
-  margin-top: 4em;
   display: flex;
   align-items: center;
   gap: 0.8em;
-  max-width: 13.5rem;
+  color: var(--color-header-text);
   font-size: var(--font-fixed-sm);
+  margin-top: 4em;
   margin-bottom: 2.7em;
+  width: min(100%, 13.5rem);
 }
 .header__site-name {
   flex: 1;
@@ -115,9 +115,9 @@ button {
   font-size: var(--font-fixed-lg);
 }
 .header__switch-label {
+  margin: 0;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin: 0;
 }
 .header__toggle-switch {
   position: relative;
@@ -125,12 +125,12 @@ button {
   width: 6em;
 }
 .header__switch-numbers {
+  position: absolute;
   display: flex;
   justify-content: space-between;
-  position: absolute;
   width: 100%;
-  transform: translateY(calc(-100% - 0.4em));
   padding: 0 calc(1.1em - 0.5ch);
+  transform: translateY(calc(-100% - 0.4em));
 }
 .header__switch-numbers > p:nth-child(2) {
   text-align: center;
@@ -146,42 +146,42 @@ button {
 .slider {
   -webkit-appearance: none;
   appearance: none;
-  height: 2.2em;
-  border-radius: 1.1em;
   background-color: var(--color-theme-toggle-background);
+  height: 2.2em;
   width: 100%;
-  font-size: var(--font-fixed-sm);
   padding: 0 0.35em;
+  border-radius: 1.1em;
+  font-size: var(--font-fixed-sm);
 }
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
+  background: var(--color-theme-toggle-switch);
   width: 1.5em;
   height: 1.5em;
-  background: var(--color-theme-toggle-switch);
   border-radius: 50%;
 }
 
 .display {
   background-color: var(--color-display-background);
-  border: none;
-  font-size: var(--font-lg);
-  padding: 0.625em;
-  width: 100%;
-  border-radius: 0.25em;
-  margin-bottom: 0.6em;
-  text-align: right;
   color: var(--color-text-display);
+  font-size: var(--font-lg);
   font-family: inherit;
+  width: 100%;
+  padding: 0.625em;
+  margin-bottom: 0.6em;
+  border: none;
+  border-radius: 0.25em;
+  text-align: right;
 }
 
 .keypad {
-  background-color: var(--color-keypad-background);
-  font-size: var(--font-md);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(autofill, 1fr);
   gap: 0.4em;
+  background-color: var(--color-keypad-background);
+  font-size: var(--font-md);
   padding: 0.75em;
   border-radius: 0.3em;
 }
@@ -190,14 +190,14 @@ button {
 }
 
 .key {
-  border: none;
-  border-radius: 0.2em;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: inherit;
+  border: none;
+  border-radius: 0.2em;
   padding: 0;
   text-transform: uppercase;
-  color: inherit;
   cursor: pointer;
 }
 .key--number, .key--operator {
@@ -206,7 +206,7 @@ button {
   text-transform: none;
 }
 .key--number:hover, .key--operator:hover {
-  background-color: var(--color-key-numbers-shadow);
+  background-color: var(--color-key-numbers-hover);
 }
 .key--deletion {
   background-color: var(--color-key-deletion);
@@ -240,7 +240,7 @@ button {
 }
 .key--rectangle::before {
   float: left;
-  padding-top: 50%;
+  padding-top: calc(50% - 0.4em);
   content: "";
 }
 .key--rectangle::after {

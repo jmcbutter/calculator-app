@@ -1,0 +1,16 @@
+.display {
+  background-color: var(--color-display-background);
+  color: var(--color-text-display);
+  
+  font-size: var(--font-lg);
+  font-family: inherit;
+  
+  width: 100%;
+  padding: 0.625em;
+  margin-bottom: 0.6em;
+  
+  border: none;
+  border-radius: 0.25em;
+  
+  text-align: right;
+}

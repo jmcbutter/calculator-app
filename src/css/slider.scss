@@ -1,0 +1,26 @@
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  
+  background-color: var(--color-theme-toggle-background);
+  
+  height: 2.2em;
+  width: 100%;
+  padding: 0 0.35em;
+  
+  border-radius: 1.1em;
+
+  font-size: var(--font-fixed-sm);
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+
+    background: var(--color-theme-toggle-switch);
+
+    width: 1.5em;
+    height: 1.5em;
+
+    border-radius: 50%;
+  }
+}

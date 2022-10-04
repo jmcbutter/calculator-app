@@ -1,0 +1,59 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  
+  color: var(--color-header-text);
+  
+  font-size: var(--font-fixed-sm);
+  
+  margin-top: 4em;
+  margin-bottom: 2.7em;
+  
+  width: min(100%, 13.5rem);
+
+
+  &__site-name {
+    flex: 1;
+    margin: 0;
+    font-size: var(--font-fixed-lg);
+  }
+
+  &__switch-label {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  &__toggle-switch {
+    position: relative;
+    margin: 0;
+    width: 6em;
+  }
+
+  &__switch-numbers {
+    position: absolute;
+    
+    display: flex;
+    justify-content: space-between;
+    
+    width: 100%;
+    padding: 0 calc(1.1em - 0.5ch);
+    
+    transform: translateY(calc(-100% - 0.4em));
+
+
+    & > p:nth-child(2) {
+      text-align: center;
+    }
+
+    & > p:nth-child(3) {
+      text-align: right;
+    }
+
+    & > p {
+      flex: 1;
+      margin: 0;
+    }
+  }
+}

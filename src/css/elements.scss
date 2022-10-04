@@ -1,0 +1,25 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-dark);
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  margin: 0 0.75em;
+  height: 100vh;
+}
+
+main {
+  width: min(100%, 13.5rem);
+}
+
+button {
+  font-size: inherit;
+  font-family: inherit;
+}
