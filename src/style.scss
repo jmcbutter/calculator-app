@@ -18,10 +18,13 @@
 
   --color-key-numbers: #EAE3DC;
   --color-key-numbers-shadow: #B3A497;
+  --color-key-numbers-shadow: #FFFFFE;
   --color-key-deletion: #647198;
   --color-key-deletion-shadow: #414E73;
+  --color-key-deletion-hover: #A2B2E1;
   --color-key-equals: #D03F2F;
   --color-key-equals-shadow: #93261A;
+  --color-key-equals-hover: #F96B5B;
   --color-text-equals: #FFFFFF;
 }
 
@@ -37,10 +40,13 @@
 
   --color-key-numbers: #E5E4E1;
   --color-key-numbers-shadow: #A79E91;
+  --color-key-numbers-hover: #FFFFFF;
   --color-key-deletion: #378187;
   --color-key-deletion-shadow: #1B6066;
+  --color-key-deletion-hover: #62B5BC;
   --color-key-equals: #C85402;
-  --color-key-equals-shadow: #873901;  
+  --color-key-equals-shadow: #873901;
+  --color-key-equals-hover: #FF8A38;  
   --color-text-equals: #FFFFFF;
 }
 
@@ -57,10 +63,13 @@
 
   --color-key-numbers: #331C4D;
   --color-key-numbers-shadow: #881C9E;
+  --color-key-numbers-hover: #6C34AC;
   --color-key-deletion: #56077C;
   --color-key-deletion-shadow: #BE15F4;
+  --color-key-deletion-hover: #8631AF;
   --color-key-equals: #00DED0;
   --color-key-equals-shadow: #6CF9F1;
+  --color-key-equals-hover: #93FFF8;
   --color-text-equals: #1A2327;
 }
 
@@ -216,11 +225,16 @@ button {
   padding: 0;
   text-transform: uppercase;
   color: inherit;
+  cursor: pointer;
 
   &--number, &--operator {
     background-color: var(--color-key-numbers);
     box-shadow: 0 4px 0 var(--color-key-numbers-shadow);
     text-transform: none;
+
+    &:hover {
+      background-color: var(--color-key-numbers-shadow);
+    }
   }
   
   &--deletion {
@@ -229,6 +243,10 @@ button {
     color: var(--color-text-light);
     font-size: var(--font-sm);
     border-radius: 0.32em;
+
+    &:hover {
+      background-color: var(--color-key-deletion-hover);
+    }
   }
 
   &--equals {
@@ -237,6 +255,10 @@ button {
     color: var(--color-text-equals);
     font-size: var(--font-sm);
     border-radius: 0.32em;
+
+    &:hover {
+      background-color: var(--color-key-equals-hover);
+    }
   }
   
   &--square {
@@ -266,6 +288,35 @@ button {
       clear: both;
     }
   }
+}
 
+@media screen and (min-width: 768px) {
+  .key--square {
+    &::before {
+      float: left;
+      padding-top: 50%;
+      content: "";
+    }
+  
+    &::after {
+      display: block;
+      content: "";
+      clear: both;
+    }
+  }
+
+  .key--rectangle {
+    &::before {
+      float: left;
+      padding-top: 25%;
+      content: "";
+    }
+  
+    &::after {
+      display: block;
+      content: "";
+      clear: both;
+    }
+  }
 }
 
