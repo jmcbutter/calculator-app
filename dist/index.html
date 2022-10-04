@@ -7,6 +7,7 @@
   <title>Frontend Mentor | Calculator app</title>
 
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 
   <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
   <style>
@@ -32,31 +33,31 @@
 
   <main>
 
-    <input class="display" type="text" name="display" id="display" value="399,981">
+    <input class="display" type="text" name="display" id="display" value="0">
   
     <div class="keypad">
-      <button class="key key--square key--number">7</button>
-      <button class="key key--square key--number">8</button>
-      <button class="key key--square key--number">9</button>
-      <button class="key key--square key--deletion">del</button>
+      <button data-key="7" class="key key--square key--number">7</button>
+      <button data-key="8" class="key key--square key--number">8</button>
+      <button data-key="9" class="key key--square key--number">9</button>
+      <button data-key="Delete Backspace" class="key key--square key--deletion">del</button>
 
-      <button class="key key--square key--number">4</button>
-      <button class="key key--square key--number">5</button>
-      <button class="key key--square key--number">6</button>
-      <button class="key key--square key--number">+</button>
+      <button data-key="4" class="key key--square key--number">4</button>
+      <button data-key="5" class="key key--square key--number">5</button>
+      <button data-key="6" class="key key--square key--number">6</button>
+      <button data-key="+" class="key key--square key--number">+</button>
 
-      <button class="key key--square key--number">1</button>
-      <button class="key key--square key--number">2</button>
-      <button class="key key--square key--number">3</button>
-      <button class="key key--square key--number">-</button>
+      <button data-key="1" class="key key--square key--number">1</button>
+      <button data-key="2" class="key key--square key--number">2</button>
+      <button data-key="3" class="key key--square key--number">3</button>
+      <button data-key="-" class="key key--square key--number">-</button>
 
-      <button class="key key--square key--number">.</button>
-      <button class="key key--square key--number">0</button>
-      <button class="key key--square key--number">/</button>
-      <button class="key key--square key--number">x</button>
+      <button data-key="." class="key key--square key--number">.</button>
+      <button data-key="0" class="key key--square key--number">0</button>
+      <button data-key="/" class="key key--square key--number">/</button>
+      <button data-key="x X *" class="key key--square key--number">x</button>
 
-      <button class="key key--rectangle key--deletion keypad__span-2">reset</button>
-      <button class="key key--rectangle key--equals keypad__span-2">=</button>
+      <button data-key="C c" class="key key--rectangle key--deletion keypad__span-2">reset (c)</button>
+      <button data-key="Enter =" class="key key--rectangle key--equals keypad__span-2">=</button>
     </div>
   </main>
 </body>
