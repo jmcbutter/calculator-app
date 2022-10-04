@@ -208,6 +208,11 @@ button {
 .key--number:hover, .key--operator:hover {
   background-color: var(--color-key-numbers-hover);
 }
+.key--number:active, .key--operator:active {
+  background-color: var(--color-key-numbers-hover);
+  box-shadow: 0 1px 0 var(--color-key-numbers-shadow);
+  transform: translateY(3px);
+}
 .key--deletion {
   background-color: var(--color-key-deletion);
   box-shadow: 0 4px 0 var(--color-key-deletion-shadow);
@@ -218,6 +223,11 @@ button {
 .key--deletion:hover {
   background-color: var(--color-key-deletion-hover);
 }
+.key--deletion:active {
+  background-color: var(--color-key-deletion-hover);
+  box-shadow: 0 1px 0 var(--color-key-deletion-shadow);
+  transform: translateY(3px);
+}
 .key--equals {
   background-color: var(--color-key-equals);
   box-shadow: 0 4px 0 var(--color-key-equals-shadow);
@@ -227,6 +237,11 @@ button {
 }
 .key--equals:hover {
   background-color: var(--color-key-equals-hover);
+}
+.key--equals:active {
+  background-color: var(--color-key-equals-hover);
+  box-shadow: 0 1px 0 var(--color-key-equals-shadow);
+  transform: translateY(3px);
 }
 .key--square::before {
   float: left;

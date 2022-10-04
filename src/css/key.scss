@@ -23,6 +23,12 @@
     &:hover {
       background-color: var(--color-key-numbers-hover);
     }
+
+    &:active {
+      background-color: var(--color-key-numbers-hover);
+      box-shadow: 0 1px 0 var(--color-key-numbers-shadow);
+      transform: translateY(3px);
+    }
   }
   
   &--deletion {
@@ -37,6 +43,12 @@
     &:hover {
       background-color: var(--color-key-deletion-hover);
     }
+
+    &:active {
+      background-color: var(--color-key-deletion-hover);
+      box-shadow: 0 1px 0 var(--color-key-deletion-shadow);
+      transform: translateY(3px);
+    }
   }
 
   &--equals {
@@ -50,6 +62,12 @@
 
     &:hover {
       background-color: var(--color-key-equals-hover);
+    }
+
+    &:active {
+      background-color: var(--color-key-equals-hover);
+      box-shadow: 0 1px 0 var(--color-key-equals-shadow);
+      transform: translateY(3px);
     }
   }
   
