@@ -1,24 +1,6 @@
 let themeSwitch = document.getElementById("toggle");
 themeSwitch.addEventListener("change", (e) => document.body.setAttribute("data-theme", e.target.value));
 
-const VALID_KEYS = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "0",
-  ".",
-  "Backspace",
-  "Delete",
-  "ArrowLeft",
-  "ArrowRight",
-];
-const display = document.getElementById("display");
 const heldDisplay = document.getElementById("held-calc");
 const buttons = document.querySelectorAll("[data-key]");
 
@@ -29,123 +11,67 @@ const buttons = document.querySelectorAll("[data-key]");
 let heldCalculationValue = 0;
 let heldCalculationOperator = "+";
 let state = State();
+let display = Display();
 
-let operators = document.querySelectorAll("[data-operator]");
-operators.forEach(operator => {
-  operator.addEventListener("click", (e) => {
+let operatorKeys = document.querySelectorAll("[data-operator]");
+operatorKeys.forEach(key => {
+  key.addEventListener("click", (e) => {
     let key = e.target.getAttribute("data-operator");
-    let displayedValue = display.value;
+    let displayedValue = display.getValue();
+
     state.operateOnState(displayedValue);
     state.setOperator(key);
+    display.updateHeldDisplayAfterOperator(state);
+    display.updateDisplayAfterOperator(state);
   })
 })
 
-buttons.forEach((button) => {
-  button.addEventListener("click", (e) => {
-    let key = e.target.getAttribute("data-key");
-    let displayedValue = display.value;
-    switch (e.target.getAttribute("data-key")) {
-      case "+":
-      case "-":
-      case "x X *":
-      case "/":
-      case "Enter =":
-        switch (heldCalculationOperator) {
-          case "+":
-            heldCalculationValue += +displayedValue;
-            break;
-          case "-":
-            heldCalculationValue -= +displayedValue;
-            break;
-          case "x":
-            heldCalculationValue *= +displayedValue;
-            break;
-          case "/":
-            heldCalculationValue /= +displayedValue;
-            break;
-        }
-        heldCalculationOperator = operator(key);
-        heldDisplay.textContent = heldDisplayValue(key);
-        display.value = displayValue(key);
-        break;
-      case "Delete Backspace":
-        if (heldCalculationOperator == "=") {
-         heldCalculationValue = "0";
-         heldCalculationOperator = "+"; 
-        }
-        if (display.value == "") {
-          display.value = "0";
-        } else {
-          display.value = displayedValue.slice(0, -1);
-        }
-        break;
-      case "C c":
-        display.value = "0";
-        
-        heldCalculationValue = "0";
-        heldCalculationOperator = "+";
-        
-        heldDisplay.textContent = "";
-        break;
-      case ".":
-        if (display.value.includes(".")) break;
-      default:
-        if (heldCalculationOperator == "=") {
-          display.value = "0";
-         
-          heldCalculationValue = "0";
-          heldCalculationOperator = "+";
-        }
-        if (display.value == "0") {
-          display.value = newNumeric(key);
-        } else {
-          display.value += key;
-        }
-        break;
-    }
+let valueKeys = document.querySelectorAll("[data-value]");
+valueKeys.forEach(key => {
+  key.addEventListener("click", (e) => {
+   let key = e.target.getAttribute("data-value");
 
-    function newNumeric(key) {
-      if (key == ".") {
-        return "0" + key;
-      } else {
-        return key;
-      }
-    }
+   if (state.getOperator() == "=") {
+     display.clearDisplay();
+     display.clearHeldDisplay();
+     state.clearState();
+   }
 
-    function operator(key) {
-      if (key == "x X *") {
-        return "x";
-      } else if (key == "Enter =") {
-        return "=";
-      } else {
-        return key;
-      }
-    }
+    display.updateDisplayAfterValue(key);
+   
+  })
+})
 
-    function heldDisplayValue(key) {
-      if (key == "Enter =") {
-        return "";
-      } else {
-        return +heldCalculationValue + " " + operator(key) + " ";
-      }
-    }
-
-    function displayValue(key) {
-      if (key == "Enter =") {
-        return +heldCalculationValue;
-      } else {
-        return "0";
-      }
+let deletionKeys = document.querySelectorAll("[data-deleter]");
+deletionKeys.forEach(key => {
+  key.addEventListener("click", (e) => {
+    let key = e.target.getAttribute("data-deleter");
+    
+    if (key == "delete") {
+      display.deleteValue();
+      if (state.getOperator() == "=") {
+        state.clearState();
+       } 
+       if (display.getValue() == "") {
+         display.clearDisplay();
+       }
+    } else if (key == "clear") {
+      display.clearDisplay();
+      display.clearHeldDisplay();
+      state.clearState();
     }
   });
 });
 
 function State() {
-  let value = "0";
+  let value = 0;
   let operator = "+";
+  let prev = 0;
+  let prevOperator;
 
   function operateOnState(newValue) {
-    newValue = +newValue;
+    prev = value;
+    prevOperator = operator;
     switch (operator) {
       case "+":
         value += newValue;
@@ -174,85 +100,100 @@ function State() {
   function getValue() {
     return value;
   }
+
+  function getOperator() {
+    return operator;
+  }
+
+  function getPrevious() {
+    return prev;
+  }
+
+  function getPreviousOperator() {
+    return prevOperator;
+  }
+
+  function clearState() {
+    value = 0;
+    operator = "+";
+  }
   
   return {
     operateOnState,
     setOperator,
     setValue,
     getValue,
+    getOperator,
+    clearState,
+    getPrevious,
+    getPreviousOperator,
   }
 }
-  // let displayedValue = display.value;
-  //     heldCalculationOperator = operator(key);
-  //     heldDisplay.textContent = heldDisplayValue(key);
-  //     display.value = displayValue(key);
-  //     break;
-  //   case "Delete Backspace":
-  //     if (heldCalculationOperator == "=") {
-  //       heldCalculationValue = "0";
-  //       heldCalculationOperator = "+"; 
-  //     }
-  //     if (display.value == "") {
-  //       display.value = "0";
-  //     } else {
-  //       display.value = displayedValue.slice(0, -1);
-  //     }
-  //     break;
-  //   case "C c":
-  //     display.value = "0";
-      
-  //     heldCalculationValue = "0";
-  //     heldCalculationOperator = "+";
-      
-  //     heldDisplay.textContent = "";
-  //     break;
-  //   case ".":
-  //     if (display.value.includes(".")) break;
-  //   default:
-  //     if (heldCalculationOperator == "=") {
-  //       display.value = "0";
-        
-  //       heldCalculationValue = "0";
-  //       heldCalculationOperator = "+";
-  //     }
-  //     if (display.value == "0") {
-  //       display.value = newNumeric(key);
-  //     } else {
-  //       display.value += key;
-  //     }
-  //     break;
-  // }
 
-  // function newNumeric(key) {
-  //   if (key == ".") {
-  //     return "0" + key;
-  //   } else {
-  //     return key;
-  //   }
-  // }
+function Display() {
+  const display = document.getElementById("display");
+  const heldDisplay = document.getElementById("held-calc");
 
-  // function operator(key) {
-  //   if (key == "x X *") {
-  //     return "x";
-  //   } else if (key == "Enter =") {
-  //     return "=";
-  //   } else {
-  //     return key;
-  //   }
-  // }
+  function getValue() {
+    return +display.value;
+  }
 
-  // function heldDisplayValue(key) {
-  //   if (key == "Enter =") {
-  //     return "";
-  //   } else {
-  //     return +heldCalculationValue + " " + operator(key) + " ";
-  //   }
-  // }
+  function updateDisplayAfterOperator(state) {
+    if (state.getOperator() == "=") {
+      display.value = state.getValue();
+    } else {
+      display.value = "0";
+    }
+  }
 
-  // function displayValue(key) {
-  //   if (key == "Enter =") {
-  //     return +heldCalculationValue;
-  //   } else {
-  //     return "0";
-  //   }
-  // }
+  function updateHeldDisplayAfterOperator(state) {
+    if (state.getOperator() == "=") {
+      heldDisplay.textContent = state.getPrevious() + " " + state.getPreviousOperator() + " " + display.value + " = ";
+    } else {
+      heldDisplay.textContent = state.getValue() + " " + state.getOperator() + " ";
+    }
+  }
+
+  function updateDisplayAfterValue(value) {
+    if (value == ".") {
+      updateDisplayAfterPeriod();
+    } else if (display.value == "0") {
+      display.value = value;
+    } else {
+      display.value += value;
+    }
+  }
+
+  function updateDisplayAfterPeriod() {
+    if (display.value == "0") {
+      display.value = "0.";
+    } else if (display.value.includes(".")) {
+      return;
+    } else {
+      display.value += ".";
+    }
+  }
+
+  function clearDisplay() {
+    display.value = "0";
+  }
+
+  function clearHeldDisplay() {
+    heldDisplay.textContent = "";
+  }
+
+  function deleteValue() {
+    display.value = display.value.slice(0, -1);
+  }
+
+
+  return {
+    getValue,
+    updateDisplayAfterOperator,
+    updateHeldDisplayAfterOperator,
+    updateDisplayAfterValue,
+    clearDisplay,
+    clearHeldDisplay,
+    deleteValue,
+  }
+}

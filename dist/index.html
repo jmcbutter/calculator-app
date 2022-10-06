@@ -36,27 +36,27 @@
     <label class="display__label" for="display" id="held-calc"></label>   
   
     <div class="keypad">
-      <button data-key="7" class="key key--square key--number">7</button>
-      <button data-key="8" class="key key--square key--number">8</button>
-      <button data-key="9" class="key key--square key--number">9</button>
-      <button data-key="Delete Backspace" class="key key--square key--deletion">del</button>
+      <button data-key="7" data-value="7" class="key key--square key--number">7</button>
+      <button data-key="8" data-value="8" class="key key--square key--number">8</button>
+      <button data-key="9" data-value="9" class="key key--square key--number">9</button>
+      <button data-key="Delete Backspace" data-deleter="delete" class="key key--square key--deletion">del</button>
 
-      <button data-key="4" class="key key--square key--number">4</button>
-      <button data-key="5" class="key key--square key--number">5</button>
-      <button data-key="6" class="key key--square key--number">6</button>
+      <button data-key="4" data-value="4" class="key key--square key--number">4</button>
+      <button data-key="5" data-value="5" class="key key--square key--number">5</button>
+      <button data-key="6" data-value="6" class="key key--square key--number">6</button>
       <button data-key="+" data-operator="+" class="key key--square key--number">+</button>
 
-      <button data-key="1" class="key key--square key--number">1</button>
-      <button data-key="2" class="key key--square key--number">2</button>
-      <button data-key="3" class="key key--square key--number">3</button>
+      <button data-key="1" data-value="1" class="key key--square key--number">1</button>
+      <button data-key="2" data-value="2" class="key key--square key--number">2</button>
+      <button data-key="3" data-value="3" class="key key--square key--number">3</button>
       <button data-key="-" data-operator="-" class="key key--square key--number">-</button>
 
-      <button data-key="." class="key key--square key--number">.</button>
-      <button data-key="0" class="key key--square key--number">0</button>
+      <button data-key="." data-value="." class="key key--square key--number">.</button>
+      <button data-key="0" data-value="0" class="key key--square key--number">0</button>
       <button data-key="/" data-operator="/" class="key key--square key--number">/</button>
       <button data-key="x X *" data-operator="x" class="key key--square key--number">x</button>
 
-      <button data-key="C c" class="key key--rectangle key--deletion keypad__span-2">reset (c)</button>
+      <button data-key="C c" data-deleter="clear" class="key key--rectangle key--deletion keypad__span-2">reset (c)</button>
       <button data-key="Enter =" data-operator="=" class="key key--rectangle key--equals keypad__span-2">=</button>
     </div>
   </main>
