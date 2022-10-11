@@ -1,199 +1,85 @@
+// THEME TOGGLE
 let themeSwitch = document.getElementById("toggle");
 themeSwitch.addEventListener("change", (e) => document.body.setAttribute("data-theme", e.target.value));
 
-const heldDisplay = document.getElementById("held-calc");
-const buttons = document.querySelectorAll("[data-key]");
 
-//TODO: Limit size of answer, provide eX when answer exceeds bounds of display using toExponential()
-//TODO: Limit size of heldDisplay, provide eX when answer exceeds bounds
-//TODO: Limit size of decimals to 10 places(?)
+const buttons = document.querySelectorAll("[data-button]");
+const display = document.getElementById("display");
 
-let heldCalculationValue = 0;
-let heldCalculationOperator = "+";
-let state = State();
-let display = Display();
+display.addEventListener("change", (e) => console.log(e.target.value));
+buttons.forEach(button => button.addEventListener("click", onButtonClick));
 
-let operatorKeys = document.querySelectorAll("[data-operator]");
-operatorKeys.forEach(key => {
-  key.addEventListener("click", (e) => {
-    let key = e.target.getAttribute("data-operator");
-    let displayedValue = display.getValue();
+let pendingValue = "0";
+let pendingOperator = "+";
 
-    state.operateOnState(displayedValue);
-    state.setOperator(key);
-    display.updateHeldDisplayAfterOperator(state);
-    display.updateDisplayAfterOperator(state);
-  })
-})
+let valueEntered = false;
 
-let valueKeys = document.querySelectorAll("[data-value]");
-valueKeys.forEach(key => {
-  key.addEventListener("click", (e) => {
-   let key = e.target.getAttribute("data-value");
+function onButtonClick(e) {
+  //If the button is a number, add the number to the display
+  //If the button is an operator, add the displayed number to the pending calculation area along with the operator and reset display to 0
+  //    Complete any pending calculations as well
+  //If the button is del, remove the last number from the display. If there are no more numbers in the display, reset the display to 0
+  //If the button is reset, remove any pending calculations and reset the display to 0
+  //Check displayed value + new value against regex pattern. If it matches, allow new value. Otherwise, disallow it
+  const numberRegex = new RegExp('^([-+]?\\d*\\.?\\d*)(?:[eE]([-+]?\\d+))?$');
+  const key = e.target.getAttribute("data-button");
 
-   if (state.getOperator() == "=") {
-     display.clearDisplay();
-     display.clearHeldDisplay();
-     state.clearState();
-   }
-
-    display.updateDisplayAfterValue(key);
-   
-  })
-})
-
-let deletionKeys = document.querySelectorAll("[data-deleter]");
-deletionKeys.forEach(key => {
-  key.addEventListener("click", (e) => {
-    let key = e.target.getAttribute("data-deleter");
-    
-    if (key == "delete") {
-      display.deleteValue();
-      if (state.getOperator() == "=") {
-        state.clearState();
-       } 
-       if (display.getValue() == "") {
-         display.clearDisplay();
-       }
-    } else if (key == "clear") {
-      display.clearDisplay();
-      display.clearHeldDisplay();
-      state.clearState();
+  if (numberRegex.test(display.value + key)) {
+    display.value = display.value + key;
+    if (display.value[1] != "." && display.value[0] == "0") {
+      display.value = display.value.slice(1);
     }
-  });
-});
+    valueEntered = true;   
+  }
 
-function State() {
-  let value = 0;
-  let operator = "+";
-  let prev = 0;
-  let prevOperator;
+  const operatorRegex = new RegExp('[\/]|[x]|[=]|[+]|[-]');
+  const pendingDisplay = document.getElementById("pending");
 
-  function operateOnState(newValue) {
-    prev = value;
-    prevOperator = operator;
-    switch (operator) {
-      case "+":
-        value += newValue;
-        break;
-      case "-":
-        value -= newValue;
-        break;
+  if (operatorRegex.test(key)) {
+    let newValue;
+    switch(pendingOperator) {
       case "x":
-        value *= newValue;
+        newValue = +pendingValue * +display.value;
         break;
       case "/":
-        value /= newValue;
+        newValue = +pendingValue / +display.value;
+        break;
+      case "-":
+        newValue = +pendingValue - +display.value;
+        break;
+      case "+":
+        newValue = +pendingValue + +display.value;
         break;
     }
-  }
-
-  function setOperator(newOperator) {
-    operator = newOperator;
-    console.log(operator);
-  }
-
-  function setValue(newValue) {
-    value = newValue;
-  }
-
-  function getValue() {
-    return value;
-  }
-
-  function getOperator() {
-    return operator;
-  }
-
-  function getPrevious() {
-    return prev;
-  }
-
-  function getPreviousOperator() {
-    return prevOperator;
-  }
-
-  function clearState() {
-    value = 0;
-    operator = "+";
-  }
-  
-  return {
-    operateOnState,
-    setOperator,
-    setValue,
-    getValue,
-    getOperator,
-    clearState,
-    getPrevious,
-    getPreviousOperator,
-  }
-}
-
-function Display() {
-  const display = document.getElementById("display");
-  const heldDisplay = document.getElementById("held-calc");
-
-  function getValue() {
-    return +display.value;
-  }
-
-  function updateDisplayAfterOperator(state) {
-    if (state.getOperator() == "=") {
-      display.value = state.getValue();
-    } else {
+    if (key == "=" && valueEntered) pendingDisplay.textContent = pendingValue + " " + pendingOperator + " " + display.value + " =";
+    if (valueEntered) {
+      pendingValue = +newValue;
+      valueEntered = false;
+    }
+    if (key != "=") {
+      pendingOperator = key;
+      pendingDisplay.textContent = pendingValue + " " + key;
       display.value = "0";
-    }
-  }
-
-  function updateHeldDisplayAfterOperator(state) {
-    if (state.getOperator() == "=") {
-      heldDisplay.textContent = state.getPrevious() + " " + state.getPreviousOperator() + " " + display.value + " = ";
     } else {
-      heldDisplay.textContent = state.getValue() + " " + state.getOperator() + " ";
+      display.value = pendingValue;
     }
+
   }
 
-  function updateDisplayAfterValue(value) {
-    if (value == ".") {
-      updateDisplayAfterPeriod();
-    } else if (display.value == "0") {
-      display.value = value;
-    } else {
-      display.value += value;
+  const clearRegex = new RegExp('del|reset');
+
+  if (clearRegex.test(key)) {
+    switch(key) {
+      case "del":
+        display.value = display.value.slice(0, -1);
+        if (display.value == "") display.value = "0";
+        break;
+      case "reset":
+        display.value = "0";
+        pendingDisplay.textContent = "";
+        pendingValue = 0;
+        pendingOperator = "+";
+        break;
     }
-  }
-
-  function updateDisplayAfterPeriod() {
-    if (display.value == "0") {
-      display.value = "0.";
-    } else if (display.value.includes(".")) {
-      return;
-    } else {
-      display.value += ".";
-    }
-  }
-
-  function clearDisplay() {
-    display.value = "0";
-  }
-
-  function clearHeldDisplay() {
-    heldDisplay.textContent = "";
-  }
-
-  function deleteValue() {
-    display.value = display.value.slice(0, -1);
-  }
-
-
-  return {
-    getValue,
-    updateDisplayAfterOperator,
-    updateHeldDisplayAfterOperator,
-    updateDisplayAfterValue,
-    clearDisplay,
-    clearHeldDisplay,
-    deleteValue,
   }
 }

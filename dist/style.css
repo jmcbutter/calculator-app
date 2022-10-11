@@ -183,6 +183,13 @@ button {
   top: 0.25rem;
   font-size: var(--font-fixed-sm);
 }
+.display::-webkit-outer-spin-button, .display::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.display[type=number] {
+  -moz-appearance: textfield;
+}
 
 .keypad {
   display: grid;
