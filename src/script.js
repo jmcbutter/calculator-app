@@ -2,84 +2,115 @@
 let themeSwitch = document.getElementById("toggle");
 themeSwitch.addEventListener("change", (e) => document.body.setAttribute("data-theme", e.target.value));
 
-
-const buttons = document.querySelectorAll("[data-button]");
 const display = document.getElementById("display");
+const buttons = Array.from(document.querySelectorAll("[data-key]"));
 
-display.addEventListener("change", (e) => console.log(e.target.value));
-buttons.forEach(button => button.addEventListener("click", onButtonClick));
+let leftOperand = 0;
+let operator = "+";
 
-let pendingValue = "0";
-let pendingOperator = "+";
+let beginNewOperand = true;
+let beginNewExpression = true;
 
-let valueEntered = false;
-
-function onButtonClick(e) {
-  //If the button is a number, add the number to the display
-  //If the button is an operator, add the displayed number to the pending calculation area along with the operator and reset display to 0
-  //    Complete any pending calculations as well
-  //If the button is del, remove the last number from the display. If there are no more numbers in the display, reset the display to 0
-  //If the button is reset, remove any pending calculations and reset the display to 0
-  //Check displayed value + new value against regex pattern. If it matches, allow new value. Otherwise, disallow it
-  const numberRegex = new RegExp('^([-+]?\\d*\\.?\\d*)(?:[eE]([-+]?\\d+))?$');
+const operandButtons = document.querySelectorAll("[data-type='value']");
+operandButtons.forEach(button => button.addEventListener("click", (e) => {  
   const key = e.target.getAttribute("data-button");
+  let rightOperand = display.value + key;
+  let validOperand = /^([-+]?\d*\.?\d*)(?:[eE]([-+]?\d+))?$/.test(rightOperand);
 
-  if (numberRegex.test(display.value + key)) {
-    display.value = display.value + key;
-    if (display.value[1] != "." && display.value[0] == "0") {
-      display.value = display.value.slice(1);
-    }
-    valueEntered = true;   
+  if (beginNewOperand) {
+    rightOperand = key;
+    beginNewOperand = false;
   }
 
-  const operatorRegex = new RegExp('[\/]|[x]|[=]|[+]|[-]');
+  if (beginNewExpression) {
+    leftOperand = 0;
+    operator = "+";
+    beginNewExpression = false;
+  }
+
+  if (validOperand) {
+    display.value = rightOperand;
+    if (needsLeadingZero()) {
+      console.log(display.value);
+      display.value = "0" + display.value;
+    }
+  }
+
+  function needsLeadingZero() {
+    return /^[-+]?[.].*/.test(display.value);
+  }
+}))
+
+const operatorButtons = document.querySelectorAll("[data-type='operator']");
+operatorButtons.forEach(button => button.addEventListener("click", (e) => {
+  const key = e.target.getAttribute("data-button");
+  const rightOperand = +display.value;
   const pendingDisplay = document.getElementById("pending");
 
-  if (operatorRegex.test(key)) {
-    let newValue;
-    switch(pendingOperator) {
-      case "x":
-        newValue = +pendingValue * +display.value;
-        break;
-      case "/":
-        newValue = +pendingValue / +display.value;
-        break;
-      case "-":
-        newValue = +pendingValue - +display.value;
-        break;
-      case "+":
-        newValue = +pendingValue + +display.value;
-        break;
+  let result;
+  switch(operator) {
+    case "x":
+      result = leftOperand * rightOperand;
+      break;
+    case "/":
+      result = leftOperand / rightOperand;
+      break;
+    case "-":
+      result = leftOperand - rightOperand;
+      break;
+    case "+":
+      result = leftOperand + rightOperand;
+      break;
     }
-    if (key == "=" && valueEntered) pendingDisplay.textContent = pendingValue + " " + pendingOperator + " " + display.value + " =";
-    if (valueEntered) {
-      pendingValue = +newValue;
-      valueEntered = false;
-    }
-    if (key != "=") {
-      pendingOperator = key;
-      pendingDisplay.textContent = pendingValue + " " + key;
+
+    if (keyIsEqualitySign() && !beginNewExpression) {
+      pendingDisplay.textContent = leftOperand + " " + operator + " " + rightOperand + " =";
+      display.value = +result;
+      leftOperand = +result;
+      beginNewOperand = true;
+      beginNewExpression = true;
+    } else if (!keyIsEqualitySign() && beginNewExpression) {
+      console.log("test");
+      pendingDisplay.textContent = leftOperand + " " + key;
       display.value = "0";
-    } else {
-      display.value = pendingValue;
+      operator = key;
+      beginNewExpression = false;
+    } else if (!keyIsEqualitySign()) {
+      leftOperand = +result;
+      operator = key;
+      pendingDisplay.textContent = leftOperand + " " + operator;
+      display.value = "0";
+      beginNewOperand = true;
     }
 
-  }
-
-  const clearRegex = new RegExp('del|reset');
-
-  if (clearRegex.test(key)) {
-    switch(key) {
-      case "del":
-        display.value = display.value.slice(0, -1);
-        if (display.value == "") display.value = "0";
-        break;
-      case "reset":
-        display.value = "0";
-        pendingDisplay.textContent = "";
-        pendingValue = 0;
-        pendingOperator = "+";
-        break;
+    function keyIsEqualitySign() {
+      return key == "=";
     }
+}))
+
+const clearButtons = document.querySelectorAll("[data-type='clear']");
+clearButtons.forEach(button => button.addEventListener("click", (e) => {
+  const key = e.target.getAttribute("data-button");
+  const pendingDisplay = document.getElementById("pending");
+
+  switch(key) {
+    case "del":
+      display.value = display.value.slice(0, -1);
+      if (display.value == "") display.value = "0";
+      break;
+    case "reset":
+      display.value = "0";
+      pendingDisplay.textContent = "";
+      leftOperand = 0;
+      operator = "+";
+      break;
   }
-}
+}))
+
+window.addEventListener("keydown", (e) => {
+  const correspondingButton = buttons.filter(button => {
+    let keys = button.dataset.key.split(" ");
+    return keys.includes(e.key);
+  })[0];
+  correspondingButton.dispatchEvent(new Event("click"));
+})
