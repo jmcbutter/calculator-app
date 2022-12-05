@@ -47,7 +47,7 @@ Users should be able to:
 ### What I learned
 
 This project helped me get some more practice with changing themes via CSS custom
-proprerties, manipulating the DOM with Javascript, and using regex to text input and make sure it fit certain criteria (such as only one decimal point in an operand).
+properties, manipulating the DOM with Javascript, and using regex to test input and make sure it fit certain criteria (such as only one decimal point in an operand).
 
 ### Continued development
 
